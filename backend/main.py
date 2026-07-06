@@ -39,15 +39,15 @@ async def chat(request: ChatRequest):
     if not api_key or api_key == "YOUR_GEMINI_API_KEY_PLACEHOLDER":
         mock_msg = (
             "========================================================\n"
-            "⚠️  SYSTEM NOTIFICATION: Gemini API Key Not Configured\n"
+            "  SYSTEM NOTIFICATION: Gemini API Key Not Configured\n"
             "========================================================\n"
             "To enable live AI responses, please configure the GEMINI_API_KEY in the root `.env` file.\n\n"
             "Hello! I am Shahrukh Faisal's Portfolio Assistant (Mock Mode).\n"
             "Here is some information about Shahrukh:\n"
-            "🎓 Education: Artificial Intelligence student at Air University, Islamabad.\n"
-            "🛠️ Tech Stack: Next.js (Frontend), FastAPI (Backend), Python, TypeScript, Tailwind CSS.\n"
-            "🚀 Focus: Full-Stack Engineering, Autonomous Agentic Workflows, and Computer Vision.\n"
-            "📁 Explore his projects and certifications using the VS Code side panel!\n"
+            " Education: Artificial Intelligence student at Air University, Islamabad.\n"
+            " Tech Stack: Next.js (Frontend), FastAPI (Backend), Python, TypeScript, Tailwind CSS.\n"
+            " Focus: Full-Stack Engineering, Autonomous Agentic Workflows, and Computer Vision.\n"
+            " Explore his projects and certifications using the VS Code side panel!\n"
             "========================================================"
         )
         return {"response": mock_msg}
@@ -73,7 +73,7 @@ async def chat(request: ChatRequest):
             return {
                 "response": (
                     "========================================================\n"
-                    "⚠️  API KEY AUTHORIZATION ERROR\n"
+                    "  API KEY AUTHORIZATION ERROR\n"
                     "========================================================\n"
                     "The Gemini API key provided in the root `.env` is invalid.\n"
                     "Google returned: 'API key not valid. Please pass a valid API key.'\n\n"
