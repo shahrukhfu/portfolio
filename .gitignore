@@ -1,0 +1,30 @@
+# Sensitive information
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python environment & cache
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Node / Next.js build and dependencies
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-editor-bg: #282a36;
+  --color-sidebar-bg: #21222c;
+  --color-activity-bg: #191a21;
+  --color-border-dark: #191a21;
+  --color-border-light: #44475a;
+  --color-text-normal: #f8f8f2;
+  --color-text-muted: #6272a4;
+  --color-dracula-purple: #bd93f9;
+  --color-dracula-pink: #ff79c6;
+  --color-dracula-cyan: #8be9fd;
+  --color-dracula-green: #50fa7b;
+  --color-dracula-yellow: #f1fa8c;
+  --color-dracula-orange: #ffb86c;
+  --color-dracula-red: #ff5555;
+  --color-dracula-selection: #44475a;
+  
+  --font-mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+:root {
+  --background: #282a36;
+  --foreground: #f8f8f2;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  overflow: hidden;
+}
+
+/* Custom Webkit scrollbar to simulate VS Code scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #191a21;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Custom terminal caret blinking animation */
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-caret {
+  animation: blink 1s step-end infinite;
+}
