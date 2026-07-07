@@ -86,7 +86,7 @@ export default function TerminalPanel() {
     setLogs((prev) => [...prev, { text: '[*] Consulting AI Core model... [spinning wheel]', type: 'loading' }]);
 
     try {
-      const response = await fetch('http://localhost:8001/api/chat', {
+      const response = await fetch('http://localhost:8000/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export default function TerminalPanel() {
         const filtered = prev.filter((l) => l.type !== 'loading');
         return [
           ...filtered,
-          { text: `⚠️ Connection Error: Failed to fetch AI response (${err.message}). Make sure backend server is running on http://localhost:8001.`, type: 'error' },
+          { text: `⚠️ Connection Error: Failed to fetch AI response (${err.message}). Make sure backend server is running on http://localhost:8000.`, type: 'error' },
         ];
       });
     } finally {
