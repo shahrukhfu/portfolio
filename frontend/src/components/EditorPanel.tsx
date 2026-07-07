@@ -14,6 +14,7 @@ interface EditorPanelProps {
 interface ParsedProject {
   title: string;
   github: string;
+  description: string;
   overview: string;
   techStack: string[];
   architecture: string[];
@@ -60,6 +61,7 @@ export default function EditorPanel({
     const lines = cleanContent.split('\n');
     let title = '';
     let github = '';
+    let description = '';
     let overview = '';
     const techStack: string[] = [];
     const architecture: string[] = [];
@@ -86,7 +88,10 @@ export default function EditorPanel({
       }
       
       // Section triggers
-      if (line.startsWith('### Overview')) {
+      if (line.startsWith('### Project Description')) {
+        currentSection = 'description';
+        continue;
+      } else if (line.startsWith('### Overview')) {
         currentSection = 'overview';
         continue;
       } else if (line.startsWith('### Core Tech Stack')) {
@@ -98,7 +103,9 @@ export default function EditorPanel({
       }
       
       // Section aggregators
-      if (currentSection === 'overview') {
+      if (currentSection === 'description') {
+        description += (description ? ' ' : '') + line.replace(/^[\*\s-]+/, '').trim();
+      } else if (currentSection === 'overview') {
         overview += (overview ? ' ' : '') + line.replace(/^[\*\s-]+/, '').trim();
       } else if (currentSection === 'tech') {
         if (line.startsWith('-') || line.startsWith('*')) {
@@ -111,7 +118,7 @@ export default function EditorPanel({
       }
     }
     
-    return { title, github, overview, techStack, architecture };
+    return { title, github, description, overview, techStack, architecture };
   };
 
   const renderLineContent = (line: string, isJson: boolean) => {
@@ -345,13 +352,24 @@ export default function EditorPanel({
                         )}
                       </div>
 
-                      {/* Overview Panel */}
-                      <div className="mb-6 animate-fade-in-up delay-75">
-                        <h3 className="text-xs font-bold uppercase text-text-muted tracking-wider mb-2 select-none">Project Overview</h3>
-                        <div className="bg-activity-bg/50 border-l-4 border-dracula-green p-4 rounded-r-lg">
-                          <p className="text-sm text-text-normal/90 leading-relaxed font-sans">{project.overview}</p>
+                      {/* Project Description Block */}
+                      {project.description && (
+                        <div className="mb-6 p-5 md:p-6 bg-gradient-to-r from-dracula-selection/25 to-dracula-purple/5 border border-dracula-purple/15 rounded-xl shadow-sm animate-fade-in-up">
+                          <p className="text-sm md:text-base text-text-normal/85 font-light leading-relaxed font-sans">
+                            {project.description}
+                          </p>
                         </div>
-                      </div>
+                      )}
+
+                      {/* Overview Panel */}
+                      {project.overview && (
+                        <div className="mb-6 animate-fade-in-up delay-75">
+                          <h3 className="text-xs font-bold uppercase text-text-muted tracking-wider mb-2 select-none">Project Overview</h3>
+                          <div className="bg-activity-bg/50 border-l-4 border-dracula-green p-4 rounded-r-lg">
+                            <p className="text-sm text-text-normal/90 leading-relaxed font-sans">{project.overview}</p>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Core Tech Stack Badges */}
                       <div className="mb-6 animate-fade-in-up delay-150">
