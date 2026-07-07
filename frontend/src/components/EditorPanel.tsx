@@ -24,6 +24,113 @@ export default function EditorPanel({
     return <FileText size={14} className="text-text-muted mr-1.5 shrink-0" />;
   };
 
+  const renderLineContent = (line: string, isJson: boolean) => {
+    if (!line.trim()) return <span>&nbsp;</span>;
+
+    if (isJson) {
+      // 1. Highlight JSON Keys, Strings, Numbers, and Brackets
+      const keyMatch = line.match(/^(\s*)("[^"]+")(\s*:\s*)(.*)$/);
+      if (keyMatch) {
+        const indent = keyMatch[1];
+        const key = keyMatch[2];
+        const colon = keyMatch[3];
+        const rest = keyMatch[4];
+        
+        let restElement = <span className="text-text-normal">{rest}</span>;
+        const trimmedRest = rest.trim();
+        
+        if (trimmedRest.startsWith('"')) {
+          const strMatch = rest.match(/^(\s*)("[^"]+")(.*)$/);
+          if (strMatch) {
+            restElement = (
+              <span>
+                <span className="text-text-normal">{strMatch[1]}</span>
+                <span className="text-dracula-green">{strMatch[2]}</span>
+                <span className="text-text-normal">{strMatch[3]}</span>
+              </span>
+            );
+          }
+        } else if (/^\d+/.test(trimmedRest)) {
+          const numMatch = rest.match(/^(\s*)(\d+)(.*)$/);
+          if (numMatch) {
+            restElement = (
+              <span>
+                <span className="text-text-normal">{numMatch[1]}</span>
+                <span className="text-dracula-orange">{numMatch[2]}</span>
+                <span className="text-text-normal">{numMatch[3]}</span>
+              </span>
+            );
+          }
+        } else if (/^(true|false|null)/.test(trimmedRest)) {
+          const valMatch = rest.match(/^(\s*)(true|false|null)(.*)$/);
+          if (valMatch) {
+            restElement = (
+              <span>
+                <span className="text-text-normal">{valMatch[1]}</span>
+                <span className="text-dracula-purple font-bold">{valMatch[2]}</span>
+                <span className="text-text-normal">{valMatch[3]}</span>
+              </span>
+            );
+          }
+        }
+        
+        return (
+          <span>
+            <span className="text-text-normal">{indent}</span>
+            <span className="text-dracula-pink">{key}</span>
+            <span className="text-dracula-purple">{colon}</span>
+            {restElement}
+          </span>
+        );
+      }
+      
+      if (/^[{}[\],:\s]+$/.test(line.trim())) {
+        return <span className="text-dracula-cyan">{line}</span>;
+      }
+      
+      return <span className="text-text-normal">{line}</span>;
+    } else {
+      // 2. Highlight Markdown headings & parse GitHub Repositories into clickable buttons
+      if (line.includes('https://github.com/')) {
+        const repoMatch = line.match(/(.*)(https?:\/\/github\.com\/\S+)(.*)/);
+        if (repoMatch) {
+          const prefix = repoMatch[1];
+          const url = repoMatch[2];
+          const suffix = repoMatch[3];
+          return (
+            <span>
+              <span className="text-text-normal">{prefix}</span>
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-dracula-cyan underline font-bold bg-dracula-selection/40 hover:bg-dracula-purple hover:text-editor-bg px-2 py-0.5 rounded transition-all duration-150 inline-flex items-center gap-1 cursor-pointer"
+              >
+                {url} ↗
+              </a>
+              <span className="text-text-normal">{suffix}</span>
+            </span>
+          );
+        }
+      }
+
+      if (line.startsWith('#') || line.startsWith('\\#')) {
+        return <span className="text-dracula-pink font-bold">{line}</span>;
+      }
+      if (line.startsWith('##') || line.startsWith('###') || line.startsWith('\\##') || line.startsWith('\\###')) {
+        return <span className="text-dracula-purple font-semibold">{line}</span>;
+      }
+      
+      if (line.trim().startsWith('#')) {
+        return <span className="text-text-muted italic">{line}</span>;
+      }
+
+      return <span className="text-text-normal/90">{line}</span>;
+    }
+  };
+
+  const isFileJson = activeFile?.name.endsWith('.json') || false;
+
   return (
     <div className="flex-1 bg-editor-bg flex flex-col h-full overflow-hidden">
       {/* Tabs Header */}
@@ -63,7 +170,7 @@ export default function EditorPanel({
       <div className="flex-1 overflow-auto relative">
         {activeFile ? (
           <div className="flex font-mono text-sm leading-relaxed p-4 h-full">
-            {/* Line Numbers */}
+            {/* Line Numbers Gutter */}
             <div className="text-right text-text-muted select-none pr-4 border-r border-border-dark w-[40px] text-xs font-light">
               {activeFile.content?.split('\n').map((_, index) => (
                 <div key={index} className="h-5">
@@ -75,8 +182,8 @@ export default function EditorPanel({
             <div className="pl-4 flex-1 select-text">
               <pre className="text-xs md:text-sm text-text-normal font-mono h-full overflow-x-auto whitespace-pre font-light">
                 {activeFile.content?.split('\n').map((line, index) => (
-                  <div key={index} className="h-5 hover:bg-dracula-selection/10 rounded px-1">
-                    {line}
+                  <div key={index} className="h-5 hover:bg-dracula-selection/10 rounded px-1 flex items-center">
+                    {renderLineContent(line, isFileJson)}
                   </div>
                 ))}
               </pre>

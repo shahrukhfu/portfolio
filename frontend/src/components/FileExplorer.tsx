@@ -15,137 +15,10 @@ export interface FileNode {
 interface FileExplorerProps {
   onFileSelect: (file: FileNode) => void;
   activeFilePath: string | null;
+  explorerData: FileNode[];
 }
 
-export const filesData: FileNode[] = [
-  {
-    name: 'projects',
-    path: 'projects',
-    type: 'folder',
-    children: [
-      {
-        name: 'project_1.json',
-        path: 'projects/project_1.json',
-        type: 'file',
-        language: 'json',
-        content: `{
-  "name": "Autonomous Agentic Coding Assistant",
-  "description": "An LLM-driven coding agent that leverages specialized tools to interact with local filesystems, execute terminal commands, and verify builds.",
-  "role": "Lead AI & Backend Developer",
-  "technologies": ["FastAPI", "Python", "Google Gemini API", "Pydantic", "Docker"],
-  "highlights": [
-    "Designed event-driven agent architecture with reactive wakeups",
-    "Created sandboxed environment execution logic using Docker API",
-    "Optimized tool-use execution cycles reducing token overhead by 35%"
-  ]
-}`
-      },
-      {
-        name: 'project_2.py',
-        path: 'projects/project_2.py',
-        type: 'file',
-        language: 'python',
-        content: `# Shahrukh Faisal - Computer Vision & Robotics Project
-import cv2
-import numpy as np
-
-class DroneTargetDetector:
-    def __init__(self, target_color_range):
-        # Air University Computer Vision Lab
-        self.target_color_range = target_color_range
-        self.detector_active = True
-
-    def process_frame(self, frame):
-        """
-        Detect target position using contour detection & color segmentation
-        """
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv, self.target_color_range[0], self.target_color_range[1])
-        
-        # Noise reduction
-        kernel = np.ones((5,5), np.uint8)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-        
-        # Finding contours
-        contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        
-        if contours:
-            largest_contour = max(contours, key=cv2.contourArea)
-            x, y, w, h = cv2.boundingRect(largest_contour)
-            centroid = (int(x + w/2), int(y + h/2))
-            return {
-                "detected": True,
-                "bbox": (x, y, w, h),
-                "centroid": centroid
-            }
-        
-        return {"detected": False}
-`
-      }
-    ]
-  },
-  {
-    name: 'certifications',
-    path: 'certifications',
-    type: 'folder',
-    children: [
-      {
-        name: 'certifications_list.md',
-        path: 'certifications/certifications_list.md',
-        type: 'file',
-        language: 'markdown',
-        content: `# Professional Certifications & Education
-
-## 🎓 Air University, Islamabad
-- **B.S. Artificial Intelligence** (Ongoing)
-- Focused Coursework: Computer Vision, Deep Learning, Autonomous Agents, Software Architecture.
-
-## 🛠️ Specialized Training
-- **DeepLearning.AI**: LangChain for LLM Application Development
-- **Google Cloud Platform**: Serverless FastAPI Deployments with Cloud Run
-- **TensorFlow Developer**: Advanced Deep Learning and Computer Vision Models
-- **NVIDIA Deep Learning Institute**: Jetson Nano Robotics & Computer Vision Edge Deployments
-`
-      }
-    ]
-  },
-  {
-    name: 'tech_stack',
-    path: 'tech_stack',
-    type: 'folder',
-    children: [
-      {
-        name: 'languages_and_frameworks.json',
-        path: 'tech_stack/languages_and_frameworks.json',
-        type: 'file',
-        language: 'json',
-        content: `{
-  "ai_machine_learning_and_cv": {
-    "libraries": ["PyTorch", "TensorFlow", "Keras", "HuggingFace", "Scikit-Learn", "OpenCV"],
-    "concepts": {
-      "agentic_workflows": ["Multi-Agent orchestration", "Tool-Calling loops", "Agentic Memory databases"],
-      "deep_architectures": ["Hybrid CNN-Attention U-Net segmentations", "custom residual blocks"],
-      "explainable_ai": ["Explainable KNN modeling", "features mapping"],
-      "cv_algorithms": ["Fingertip tracking (MediaPipe)", "Convex Hull boundary detection (Graham Scan)", "GLCM texture analysis"]
-    }
-  },
-  "full_stack_and_systems_engineering": {
-    "languages": ["Python", "TypeScript", "JavaScript", "C++", "Assembly (x86)"],
-    "frameworks": ["Next.js", "React", "FastAPI", "Node.js", "Express.js", "Tailwind CSS"],
-    "concepts": {
-      "stateful_auth": ["JWT dual-token lifecycles", "Role-Based Access Control (RBAC)"],
-      "low_level": ["x86 Assembly console integrations", "registers management (Irvine32 runtime)"],
-      "language_tooling": ["Multi-language transpilation to executable Python syntax (UniversalPython)"]
-    }
-  },
-  "databases_cloud_and_tooling": ["MongoDB", "PostgreSQL", "MySQL", "Firebase", "Docker", "Vercel", "Git"]
-}`
-      }
-    ]
-  }
-];
-
-export default function FileExplorer({ onFileSelect, activeFilePath }: FileExplorerProps) {
+export default function FileExplorer({ onFileSelect, activeFilePath, explorerData }: FileExplorerProps) {
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({
     projects: true,
     certifications: true,
@@ -236,7 +109,7 @@ export default function FileExplorer({ onFileSelect, activeFilePath }: FileExplo
 
       {/* Directory File Tree */}
       <div className="flex-1 overflow-y-auto py-1">
-        {filesData.map((node) => renderNode(node))}
+        {explorerData.map((node) => renderNode(node))}
       </div>
     </div>
   );
