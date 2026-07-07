@@ -12,6 +12,8 @@ This master document aggregates the active full-stack engineering, artificial in
 
 \# Local RAG Chatbot
 
+\- \*\*GitHub Repository:\*\* https://github.com/shahrukhfu/local-rag-chatbot
+
 
 
 \### Overview
@@ -50,6 +52,8 @@ An open-source, fully offline Retrieval-Augmented Generation (RAG) implementatio
 
 \# Embedded Elevator Control System
 
+\- \*\*GitHub Repository:\*\* https://github.com/shahrukhfu/embedded-elevator-control-system
+
 
 
 \### Overview
@@ -83,6 +87,8 @@ A low-level hardware-software co-design project modeling a responsive, real-time
 
 
 \# Brain MRI Analysis Deep Vision Pipeline
+
+\- \*\*GitHub Repository:\*\* https://github.com/shahrukhfu/brain-mri-analysis-deep-vision-pipeline
 
 
 
@@ -120,6 +126,8 @@ A state-of-the-art computer vision and machine learning medical imaging system e
 
 \# AI Genius Backend
 
+\- \*\*GitHub Repository:\*\* https://github.com/shahrukhfu/ai-genius-backend
+
 
 
 \### Overview
@@ -155,6 +163,8 @@ A high-throughput, asynchronous backend infrastructure engineered to serve compl
 
 
 \# GitHub Project Recommending Agent
+
+\- \*\*GitHub Repository:\*\* https://github.com/shahrukhfu/Github-Project-Recommending-Agent
 
 
 
@@ -192,6 +202,8 @@ An autonomous, intelligence-driven recommendation workflow agent designed to ana
 
 \# Customer Retention Engine
 
+\- \*\*GitHub Repository:\*\* https://github.com/shahrukhfu/customer-retention-engine
+
 
 
 \### Overview
@@ -228,6 +240,8 @@ An enterprise-grade churn prediction engine leveraging statistical analysis and 
 
 \# Loan Predict AI
 
+\- \*\*GitHub Repository:\*\* https://github.com/shahrukhfu/loan-predict-ai
+
 
 
 \### Overview
@@ -263,6 +277,8 @@ A secure, regulatory-compliant financial risk assessment and loan risk scoring m
 
 
 \# Simple Multi-Agent Chat System
+
+\- \*\*GitHub Repository:\*\* https://github.com/shahrukhfu/Simple-Multi-Agent-Chat-System
 
 
 

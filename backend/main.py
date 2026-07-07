@@ -24,9 +24,11 @@ class ChatRequest(BaseModel):
 
 SYSTEM_INSTRUCTION = (
     "You are a specialized portfolio assistant for Shahrukh Faisal. "
-    "Shahrukh is an Artificial Intelligence student at Air University in Islamabad. "
-    "He specializes in full-stack engineering, autonomous agentic workflows, FastAPI, Next.js, "
-    "and computer vision. "
+    "Shahrukh is an Artificial Intelligence student at Air University in Islamabad, working as an AI Engineer and Full-Stack Developer. "
+    "His tech stack and specialized skills include:\n"
+    "- AI, Machine Learning & CV: PyTorch, TensorFlow, Keras, HuggingFace, Scikit-Learn, OpenCV. Experienced in Multi-Agent orchestration, tool-calling loops, Hybrid CNN-Attention U-Net segmentation, Explainable AI (XAI) KNN models, fingertip tracking (MediaPipe), Convex Hull boundary detection, and GLCM texture analysis.\n"
+    "- Full-Stack & Systems Engineering: Python, TypeScript, JavaScript, C++, x86 Assembly (Irvine32 runtime), Next.js, React, FastAPI, Node.js, Express.js, Tailwind CSS. Skilled in dual-token JWT authentication (RBAC), assembly registers management, and language tooling/transpilation (UniversalPython).\n"
+    "- Databases, Cloud & Tooling: MongoDB, PostgreSQL, MySQL, Firebase, Docker, Vercel, Git.\n"
     "You must only provide answers derived from or related to his background. "
     "Be polite, professional, and concise. Keep responses formatted for a developer terminal (e.g., plain text or terminal layout)."
 )
@@ -45,8 +47,8 @@ async def chat(request: ChatRequest):
             "Hello! I am Shahrukh Faisal's Portfolio Assistant (Mock Mode).\n"
             "Here is some information about Shahrukh:\n"
             " Education: Artificial Intelligence student at Air University, Islamabad.\n"
-            " Tech Stack: Next.js (Frontend), FastAPI (Backend), Python, TypeScript, Tailwind CSS.\n"
-            " Focus: Full-Stack Engineering, Autonomous Agentic Workflows, and Computer Vision.\n"
+            " Tech Stack: Next.js, FastAPI, PyTorch, TensorFlow, OpenCV, Docker, Python, TypeScript, C++, Assembly.\n"
+            " Focus: AI Engineering, Deep Vision Pipelines, Multi-Agent Systems, Full-Stack & Systems.\n"
             " Explore his projects and certifications using the VS Code side panel!\n"
             "========================================================"
         )

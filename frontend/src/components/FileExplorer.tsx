@@ -120,16 +120,25 @@ class DroneTargetDetector:
         type: 'file',
         language: 'json',
         content: `{
-  "languages": {
-    "proficient": ["Python", "TypeScript", "JavaScript", "HTML/CSS", "SQL"],
-    "familiar": ["Rust", "C++"]
+  "ai_machine_learning_and_cv": {
+    "libraries": ["PyTorch", "TensorFlow", "Keras", "HuggingFace", "Scikit-Learn", "OpenCV"],
+    "concepts": {
+      "agentic_workflows": ["Multi-Agent orchestration", "Tool-Calling loops", "Agentic Memory databases"],
+      "deep_architectures": ["Hybrid CNN-Attention U-Net segmentations", "custom residual blocks"],
+      "explainable_ai": ["Explainable KNN modeling", "features mapping"],
+      "cv_algorithms": ["Fingertip tracking (MediaPipe)", "Convex Hull boundary detection (Graham Scan)", "GLCM texture analysis"]
+    }
   },
-  "frameworks_and_libraries": {
-    "backend": ["FastAPI", "Uvicorn", "Flask", "Django"],
-    "frontend": ["Next.js", "React", "Tailwind CSS", "Redux Toolkit"],
-    "ai_and_cv": ["PyTorch", "TensorFlow", "OpenCV", "Scikit-Learn", "LangChain"]
+  "full_stack_and_systems_engineering": {
+    "languages": ["Python", "TypeScript", "JavaScript", "C++", "Assembly (x86)"],
+    "frameworks": ["Next.js", "React", "FastAPI", "Node.js", "Express.js", "Tailwind CSS"],
+    "concepts": {
+      "stateful_auth": ["JWT dual-token lifecycles", "Role-Based Access Control (RBAC)"],
+      "low_level": ["x86 Assembly console integrations", "registers management (Irvine32 runtime)"],
+      "language_tooling": ["Multi-language transpilation to executable Python syntax (UniversalPython)"]
+    }
   },
-  "developer_tools": ["Git", "Docker", "VS Code", "PostgreSQL", "Google Cloud Platform"]
+  "databases_cloud_and_tooling": ["MongoDB", "PostgreSQL", "MySQL", "Firebase", "Docker", "Vercel", "Git"]
 }`
       }
     ]
