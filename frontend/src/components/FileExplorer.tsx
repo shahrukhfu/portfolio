@@ -20,9 +20,9 @@ interface FileExplorerProps {
 
 export default function FileExplorer({ onFileSelect, activeFilePath, explorerData }: FileExplorerProps) {
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({
-    projects: true,
-    certifications: true,
-    tech_stack: true,
+    projects: false,
+    certifications: false,
+    tech_stack: false,
   });
 
   const toggleFolder = (folderName: string) => {
