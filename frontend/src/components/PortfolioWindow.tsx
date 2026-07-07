@@ -14,6 +14,7 @@ interface PortfolioWindowProps {
 export default function PortfolioWindow({ initialExplorerData }: PortfolioWindowProps) {
   const [activeTab, setActiveTab] = useState<string>('explorer');
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [terminalOpen, setTerminalOpen] = useState<boolean>(true);
   const [openFiles, setOpenFiles] = useState<FileNode[]>([]);
   const [activeFile, setActiveFile] = useState<FileNode | null>(null);
 
@@ -128,6 +129,31 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
         
         {/* Empty layout spacer */}
         <div className="w-1/4 flex justify-end items-center text-[10px] uppercase font-bold tracking-wider opacity-85">
+          {/* Layout Toggles */}
+          <div className="flex items-center gap-1 border-r border-border-dark pr-2 mr-2">
+            <button
+              onClick={() => setSidebarOpen(prev => !prev)}
+              title="Toggle Primary Side Bar"
+              className={`p-1.5 rounded hover:bg-dracula-selection/60 transition-colors cursor-pointer text-text-normal ${
+                sidebarOpen ? 'opacity-90 text-dracula-purple' : 'opacity-45 text-text-muted hover:opacity-100 hover:text-text-normal'
+              }`}
+            >
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M1.75 2.5a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h3.5V2.5h-3.5zm4.5 0v11h8a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25h-8zM0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75z"/>
+              </svg>
+            </button>
+            <button
+              onClick={() => setTerminalOpen(prev => !prev)}
+              title="Toggle Panel"
+              className={`p-1.5 rounded hover:bg-dracula-selection/60 transition-colors cursor-pointer text-text-normal ${
+                terminalOpen ? 'opacity-90 text-dracula-purple' : 'opacity-45 text-text-muted hover:opacity-100 hover:text-text-normal'
+              }`}
+            >
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M14.25 14a.25.25 0 0 0 .25-.25V3.75a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25v10a.25.25 0 0 0 .25.25h12.5zM1.75 2h12.5C15.216 2 16 2.784 16 3.75v10A1.75 1.75 0 0 1 14.25 15.5H1.75A1.75 1.75 0 0 1 0 13.75v-10C0 2.784.784 2 1.75 2zm12.5 9.5H1.75v2.25c0 .138.112.25.25.25h12c.138 0 .25-.112.25-.25V11.5z"/>
+              </svg>
+            </button>
+          </div>
           <span className="bg-dracula-selection px-2 py-0.5 rounded text-dracula-purple">Dracula Theme</span>
         </div>
       </div>
@@ -267,17 +293,19 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
             />
           </div>
 
-          {/* Terminal Resize Handle */}
-          <div
-            onMouseDown={(e) => {
-              e.preventDefault();
-              setIsResizingTerminal(true);
-            }}
-            className="h-1 bg-border-dark/60 hover:bg-dracula-purple/50 active:bg-dracula-purple cursor-row-resize shrink-0 z-20 transition-colors"
-          />
-
-          {/* Terminal Console Panel */}
-          <TerminalPanel height={terminalHeight} />
+          {/* Terminal Resize Handle & Console Panel */}
+          {terminalOpen && (
+            <>
+              <div
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setIsResizingTerminal(true);
+                }}
+                className="h-1 bg-border-dark/60 hover:bg-dracula-purple/50 active:bg-dracula-purple cursor-row-resize shrink-0 z-20 transition-colors"
+              />
+              <TerminalPanel height={terminalHeight} />
+            </>
+          )}
         </div>
       </div>
 
