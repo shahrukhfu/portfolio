@@ -123,7 +123,7 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
         
         {/* Document Title */}
         <div className="w-2/4 text-center truncate select-text">
-          {activeFile ? `${activeFile.name} - ` : ''}Shahrukh Faisal Portfolio - Visual Studio Code
+          {activeFile ? `${activeFile.name} - ` : ''}Shahrukh Faisal
         </div>
         
         {/* Empty layout spacer */}
