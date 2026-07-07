@@ -10,7 +10,7 @@ interface LogLine {
 
 const WELCOME_LINES = [
   "==================================================================",
-  "💻 WELCOME TO SHAHRUKH FAISAL'S PORTFOLIO TERMINAL v1.0.0",
+  "WELCOME TO SHAHRUKH FAISAL'S PORTFOLIO TERMINAL v1.0.0",
   "==================================================================",
   "Available local commands:",
   "  help  - Display this help documentation",
@@ -103,7 +103,7 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
       }
 
       const data = await response.json();
-      
+
       // Remove loading line and append response
       setLogs((prev) => {
         const filtered = prev.filter((l) => l.type !== 'loading');
@@ -138,41 +138,37 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
         <div className="flex">
           <button
             onClick={() => setActiveTab('problems')}
-            className={`px-4 py-2 hover:text-text-normal cursor-pointer transition-colors ${
-              activeTab === 'problems'
+            className={`px-4 py-2 hover:text-text-normal cursor-pointer transition-colors ${activeTab === 'problems'
                 ? 'text-dracula-purple border-b-2 border-dracula-purple'
                 : 'text-text-muted'
-            }`}
+              }`}
           >
             Problems
           </button>
           <button
             onClick={() => setActiveTab('output')}
-            className={`px-4 py-2 hover:text-text-normal cursor-pointer transition-colors ${
-              activeTab === 'output'
+            className={`px-4 py-2 hover:text-text-normal cursor-pointer transition-colors ${activeTab === 'output'
                 ? 'text-dracula-purple border-b-2 border-dracula-purple'
                 : 'text-text-muted'
-            }`}
+              }`}
           >
             Output
           </button>
           <button
             onClick={() => setActiveTab('debug')}
-            className={`px-4 py-2 hover:text-text-normal cursor-pointer transition-colors ${
-              activeTab === 'debug'
+            className={`px-4 py-2 hover:text-text-normal cursor-pointer transition-colors ${activeTab === 'debug'
                 ? 'text-dracula-purple border-b-2 border-dracula-purple'
                 : 'text-text-muted'
-            }`}
+              }`}
           >
             Debug Console
           </button>
           <button
             onClick={() => setActiveTab('terminal')}
-            className={`px-4 py-2 hover:text-text-normal cursor-pointer transition-colors flex items-center gap-1.5 ${
-              activeTab === 'terminal'
+            className={`px-4 py-2 hover:text-text-normal cursor-pointer transition-colors flex items-center gap-1.5 ${activeTab === 'terminal'
                 ? 'text-text-normal border-b-2 border-dracula-purple bg-editor-bg/40 font-semibold'
                 : 'text-text-muted'
-            }`}
+              }`}
           >
             <Terminal size={12} />
             Terminal
@@ -231,9 +227,8 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
                 <span className="whitespace-pre truncate select-text">{inputValue}</span>
                 {/* Blinking Cursor Caret */}
                 <span
-                  className={`inline-block w-2 h-4 bg-dracula-purple ml-0.5 ${
-                    isFocused ? 'animate-caret' : 'opacity-30'
-                  }`}
+                  className={`inline-block w-2 h-4 bg-dracula-purple ml-0.5 ${isFocused ? 'animate-caret' : 'opacity-30'
+                    }`}
                 />
               </div>
             )}
