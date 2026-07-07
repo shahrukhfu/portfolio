@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    { "id": "core", "label": "Portfolio Core", "group": "hub", "color": "#ffffff", "details": ["The unified multi-repo architecture wrapper."] },
+    { "id": "frontend", "label": "Frontend Layer", "group": "parent", "color": "#0070f3", "details": ["Next.js App Router workspace environment."] },
+    { "id": "backend", "label": "AI Engine", "group": "parent", "color": "#059669", "details": ["FastAPI asynchronous pipeline handler."] },
+    { "id": "next", "label": "Next.js", "group": "child", "color": "#0070f3", "details": ["Server-Side Rendering optimization", "File-based layout routing"] },
+    { "id": "framer", "label": "Framer Motion", "group": "child", "color": "#ff0055", "details": ["Fluid view cross-fades", "Spring-loaded panel interactions"] },
+    { "id": "fastapi", "label": "FastAPI", "group": "child", "color": "#059669", "details": ["Asynchronous connection loops", "Low-latency streaming pipes"] },
+    { "id": "langchain", "label": "LangChain", "group": "child", "color": "#123456", "details": ["Granular Markdown splitting", "Grounded system prompt wrappers"] },
+    { "id": "chroma", "label": "ChromaDB", "group": "child", "color": "#f59e0b", "details": ["Persistent local vector indexing", "Zero-cloud data sandboxing"] }
+  ],
+  "links": [
+    { "source": "core", "target": "frontend" },
+    { "source": "core", "target": "backend" },
+    { "source": "frontend", "target": "next" },
+    { "source": "frontend", "target": "framer" },
+    { "source": "backend", "target": "fastapi" },
+    { "source": "backend", "target": "langchain" },
+    { "source": "backend", "target": "chroma" },
+    { "source": "langchain", "target": "chroma" },
+    { "source": "langchain", "target": "fastapi" }
+  ]
+}

@@ -81,6 +81,18 @@ function getExplorerData(): FileNode[] {
       }
     ];
 
+    // 4. Load portfolio_blueprint.json
+    const blueprintPath = path.join(dataDir, 'portfolio_blueprint.json');
+    const blueprintRaw = fs.readFileSync(blueprintPath, 'utf-8');
+
+    const blueprintNode: FileNode = {
+      name: 'portfolio_blueprint.json',
+      path: 'portfolio_blueprint.json',
+      type: 'file',
+      language: 'json',
+      content: blueprintRaw
+    };
+
     // Combine into unified file tree
     return [
       {
@@ -100,7 +112,8 @@ function getExplorerData(): FileNode[] {
         path: 'tech_stack',
         type: 'folder',
         children: techStackNodes
-      }
+      },
+      blueprintNode
     ];
   } catch (err) {
     console.error("Error reading file tree data files:", err);

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, FileJson, FileCode, FileText, Code2, Check } from 'lucide-react';
 import { FileNode } from './FileExplorer';
 
@@ -18,6 +18,372 @@ interface ParsedProject {
   overview: string;
   techStack: string[];
   architecture: string[];
+}
+
+function PortfolioNetworkGraph({ nodes, links }: { nodes: any[]; links: any[] }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsExpanded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const nodePositions: Record<string, { x: number; y: number }> = {
+    core: { x: 400, y: 250 },
+    frontend: { x: 230, y: 250 },
+    backend: { x: 570, y: 250 },
+    next: { x: 100, y: 150 },
+    framer: { x: 100, y: 350 },
+    fastapi: { x: 700, y: 150 },
+    langchain: { x: 700, y: 250 },
+    chroma: { x: 700, y: 350 }
+  };
+
+  const decorativeMicroNodes = [
+    { id: 'next_sub1', parentId: 'next', x: 60, y: 110, color: '#0070f3' },
+    { id: 'next_sub2', parentId: 'next', x: 50, y: 170, color: '#0070f3' },
+    { id: 'fastapi_sub1', parentId: 'fastapi', x: 740, y: 110, color: '#059669' },
+    { id: 'fastapi_sub2', parentId: 'fastapi', x: 750, y: 170, color: '#059669' }
+  ];
+
+  const telemetryData: Record<string, string> = {
+    core: "SYS_LOAD: 1.2% | SIG: 0xCORE",
+    frontend: "FPS: 60 | RENDER: DOM_VIRTUAL",
+    backend: "ASYNCHRONOUS | LATENCY: 12ms",
+    next: "SSR: ENGAGED | ROUTING: STATIC",
+    framer: "MOTION: SPRING | SPRING_K: 0.15",
+    fastapi: "UVICORN: ACTIVE | PORT: 8000",
+    langchain: "SPLIT_CHUNK: 500 | RETRIEVE: OK",
+    chroma: "LOCAL_DB | DB_VECTORS: 128"
+  };
+
+  const isNodeActive = (nodeId: string) => {
+    if (!hoveredNodeId) return true;
+    if (nodeId === hoveredNodeId) return true;
+    return links.some((link: any) => 
+      (link.source === hoveredNodeId && link.target === nodeId) ||
+      (link.target === hoveredNodeId && link.source === nodeId)
+    );
+  };
+
+  const isLinkActive = (link: any) => {
+    if (!hoveredNodeId) return true;
+    return link.source === hoveredNodeId || link.target === hoveredNodeId;
+  };
+
+  const getLinkColor = (link: any) => {
+    if (!hoveredNodeId) return '#44475a';
+    if (link.source === hoveredNodeId) {
+      const sourceNode = nodes.find((n: any) => n.id === link.source);
+      return sourceNode?.color || '#44475a';
+    }
+    if (link.target === hoveredNodeId) {
+      const targetNode = nodes.find((n: any) => n.id === link.target);
+      return targetNode?.color || '#44475a';
+    }
+    return '#44475a';
+  };
+
+  const handleMouseMove = (e: React.MouseEvent, nodeId: string) => {
+    const container = e.currentTarget.closest('.network-container');
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      setTooltipPos({
+        x: e.clientX - rect.left + 15,
+        y: e.clientY - rect.top + 15
+      });
+    }
+    setHoveredNodeId(nodeId);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredNodeId(null);
+  };
+
+  const hoveredNode = nodes.find((n: any) => n.id === hoveredNodeId);
+
+  return (
+    <div className="network-container relative w-full h-[500px] bg-activity-bg/10 border border-border-light/40 rounded-xl overflow-hidden shadow-inner p-4 flex flex-col justify-between select-none">
+      {/* Corner telemetry overlays */}
+      <div className="absolute top-3 left-3 text-[9px] text-text-muted/40 font-mono select-none pointer-events-none flex flex-col">
+        <span>[SYS_STATUS: INIT_OK]</span>
+        <span>[ADDR: 0x00FF]</span>
+      </div>
+      <div className="absolute top-3 right-3 text-[9px] text-text-muted/40 font-mono select-none pointer-events-none flex flex-col text-right">
+        <span>[PORTFOLIO_NET: ONLINE]</span>
+        <span>[LOC: 127.0.0.1:3000]</span>
+      </div>
+      <div className="absolute bottom-3 left-3 text-[9px] text-text-muted/40 font-mono select-none pointer-events-none flex flex-col">
+        <span>[THEME: DRACULA_SYS]</span>
+        <span>[MATRIX_RUN: 0x99AA]</span>
+      </div>
+      <div className="absolute bottom-3 right-3 text-[9px] text-text-muted/40 font-mono select-none pointer-events-none flex flex-col text-right">
+        <span>[RENDER: SVG_CANVAS]</span>
+        <span>[SIG_INT: 0xEEFF]</span>
+      </div>
+
+      {/* Absolute floating HUD tooltip */}
+      {hoveredNode && (
+        <div
+          style={{
+            left: `${tooltipPos.x}px`,
+            top: `${tooltipPos.y}px`,
+            pointerEvents: 'none',
+            zIndex: 50,
+            borderColor: hoveredNode.color,
+            boxShadow: `0 0 20px ${hoveredNode.color}25, inset 0 0 10px rgba(0,0,0,0.5)`,
+            background: 'repeating-linear-gradient(to bottom, rgba(33, 34, 44, 0.98), rgba(33, 34, 44, 0.98) 2px, rgba(25, 26, 33, 0.98) 2px, rgba(25, 26, 33, 0.98) 4px)'
+          }}
+          className="absolute border-l-4 rounded-none px-4 py-3 shadow-2xl max-w-xs font-mono text-xs select-none animate-scale-in"
+        >
+          <div className="flex justify-between items-center mb-1 text-[10px] text-text-muted">
+            <span>[SYS_SIG: 0x{hoveredNode.id.toUpperCase()}]</span>
+            <span style={{ color: hoveredNode.color }}>● ONLINE</span>
+          </div>
+          <div className="font-bold text-text-normal text-sm mb-0.5">{hoveredNode.label}</div>
+          <div className="text-[8px] opacity-65 uppercase tracking-wider mb-2 font-semibold" style={{ color: hoveredNode.color }}>
+            {hoveredNode.group} telemetry
+          </div>
+          <div className="border-t border-border-dark/60 pt-2 space-y-1.5">
+            {hoveredNode.details.map((detail: string, i: number) => (
+              <div key={i} className="text-text-normal/90 text-[10.5px] leading-relaxed">
+                &gt; {detail}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* SVG Canvas */}
+      <div className="flex-1 w-full h-full relative">
+        <svg viewBox="0 0 800 500" className="w-full h-full">
+          <style>{`
+            @keyframes dash {
+              to {
+                stroke-dashoffset: -20;
+              }
+            }
+            .link-flow {
+              stroke-dasharray: 5, 5;
+              animation: dash 1s linear infinite;
+            }
+            @keyframes spin-ring {
+              to {
+                stroke-dashoffset: 30;
+              }
+            }
+            .orbit-ring {
+              stroke-dasharray: 3, 3;
+              animation: spin-ring 5s linear infinite;
+            }
+          `}</style>
+          
+          <defs>
+            {/* Cyberpunk grid pattern */}
+            <pattern id="cyber-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#44475a" strokeWidth="0.5" opacity="0.18" />
+            </pattern>
+          </defs>
+
+          {/* Grid background */}
+          <rect width="100%" height="100%" fill="url(#cyber-grid)" />
+
+          {/* Link Lines */}
+          {links.map((link: any, idx: number) => {
+            const sourcePos = nodePositions[link.source] || { x: 400, y: 250 };
+            const targetPos = nodePositions[link.target] || { x: 400, y: 250 };
+            const active = isLinkActive(link);
+            const color = getLinkColor(link);
+
+            return (
+              <g key={idx}>
+                {/* Background base link path */}
+                <line
+                  x1={isExpanded ? sourcePos.x : 400}
+                  y1={isExpanded ? sourcePos.y : 250}
+                  x2={isExpanded ? targetPos.x : 400}
+                  y2={isExpanded ? targetPos.y : 250}
+                  stroke="#44475a"
+                  strokeWidth={0.8}
+                  opacity={active ? 0.35 : 0.08}
+                  style={{
+                    transition: 'x1 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), y1 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), x2 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), y2 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease'
+                  }}
+                />
+                {/* Animated overlay link path */}
+                <line
+                  x1={isExpanded ? sourcePos.x : 400}
+                  y1={isExpanded ? sourcePos.y : 250}
+                  x2={isExpanded ? targetPos.x : 400}
+                  y2={isExpanded ? targetPos.y : 250}
+                  stroke={color}
+                  strokeWidth={active ? (hoveredNodeId ? 2.5 : 1.8) : 0.8}
+                  opacity={active ? 1 : 0.1}
+                  className={active ? 'link-flow' : ''}
+                  style={{
+                    transition: 'x1 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), y1 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), x2 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), y2 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), stroke 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease'
+                  }}
+                />
+              </g>
+            );
+          })}
+
+          {/* Decorative Micro-nodes and lines */}
+          {decorativeMicroNodes.map((micro: any, idx: number) => {
+            const parentPos = nodePositions[micro.parentId] || { x: 400, y: 250 };
+            const active = isNodeActive(micro.parentId);
+            
+            const px = isExpanded ? parentPos.x : 400;
+            const py = isExpanded ? parentPos.y : 250;
+            const mx = isExpanded ? micro.x : 400;
+            const my = isExpanded ? micro.y : 250;
+
+            return (
+              <g key={micro.id} opacity={active ? 0.35 : 0.08} style={{ transition: 'opacity 0.3s ease' }}>
+                <line
+                  x1={px}
+                  y1={py}
+                  x2={mx}
+                  y2={my}
+                  stroke={micro.color}
+                  strokeWidth={0.6}
+                  strokeDasharray="2, 2"
+                  style={{
+                    transition: 'x1 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), y1 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), x2 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), y2 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                  }}
+                />
+                <circle
+                  cx={mx}
+                  cy={my}
+                  r={2.5}
+                  fill="#282a36"
+                  stroke={micro.color}
+                  strokeWidth={1}
+                  style={{
+                    transition: 'cx 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                  }}
+                />
+              </g>
+            );
+          })}
+
+          {/* Node Circles & Labels */}
+          {nodes.map((node: any, idx: number) => {
+            const finalPos = nodePositions[node.id] || { x: 400, y: 250 };
+            const active = isNodeActive(node.id);
+            const hovered = hoveredNodeId === node.id;
+            
+            const cx = isExpanded ? finalPos.x : 400;
+            const cy = isExpanded ? finalPos.y : 250;
+
+            const radius = node.group === 'hub' ? 24 : node.group === 'parent' ? 16 : 10;
+            const labelOffsetY = radius + 16;
+
+            return (
+              <g
+                key={node.id}
+                onMouseMove={(e) => handleMouseMove(e, node.id)}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  opacity: active ? 1 : 0.15,
+                  transform: hovered ? `scale(1.2)` : 'scale(1)',
+                  transformOrigin: `${cx}px ${cy}px`,
+                  filter: hovered ? `drop-shadow(0 0 12px ${node.color})` : 'none',
+                  transition: 'opacity 0.3s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease'
+                }}
+              >
+                {hovered && (
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={radius + 5}
+                    fill="none"
+                    stroke={node.color}
+                    strokeWidth={1.5}
+                    className="animate-ping opacity-45"
+                  />
+                )}
+
+                {/* Dashed outer orbit ring */}
+                {(node.group === 'hub' || node.group === 'parent') && (
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={node.group === 'hub' ? 32 : 23}
+                    fill="none"
+                    stroke={node.color}
+                    strokeWidth={0.8}
+                    opacity={active ? 0.45 : 0.1}
+                    className="orbit-ring"
+                    style={{
+                      transition: 'cx 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease'
+                    }}
+                  />
+                )}
+
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={radius}
+                  fill="#282a36"
+                  stroke={node.color}
+                  strokeWidth={node.group === 'hub' ? 3.5 : 2}
+                  style={{
+                    transition: 'cx 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                  }}
+                />
+
+                {node.group === 'child' && (
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={3}
+                    fill={node.color}
+                    style={{
+                      transition: 'cx 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                    }}
+                  />
+                )}
+
+                <text
+                  x={cx}
+                  y={cy + labelOffsetY}
+                  textAnchor="middle"
+                  fill="#f8f8f2"
+                  className="text-[10px] font-mono select-none"
+                  style={{
+                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)',
+                    transition: 'x 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), y 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                  }}
+                >
+                  {node.label}
+                </text>
+
+                <text
+                  x={cx}
+                  y={cy + labelOffsetY + 10}
+                  textAnchor="middle"
+                  fill="#6272a4"
+                  className="text-[7.5px] font-mono select-none font-light tracking-wide opacity-50"
+                  style={{
+                    transition: 'x 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), y 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                  }}
+                >
+                  {telemetryData[node.id] || ''}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      <div className="text-[10px] text-text-muted select-none text-center font-mono border-t border-border-dark pt-2">
+        Hover nodes to isolate connections, view details, and trace paths.
+      </div>
+    </div>
+  );
 }
 
 export default function EditorPanel({
@@ -532,6 +898,25 @@ export default function EditorPanel({
                           );
                         })}
                       </div>
+                    </div>
+                  );
+                })()
+              ) : activeFile.path === 'portfolio_blueprint.json' ? (
+                /* D. Portfolio Blueprint Architecture Showcase */
+                (() => {
+                  const data = JSON.parse(activeFile.content || '{}');
+                  const nodes = data.nodes || [];
+                  const links = data.links || [];
+                  return (
+                    <div className="p-4 md:p-6 animate-fade-in-up max-w-5xl mx-auto">
+                      <div className="mb-6 border-b border-border-dark pb-4">
+                        <h1 className="text-xl md:text-2xl font-bold text-dracula-purple flex items-center gap-2 font-sans">
+                          Architecture & Network System Map
+                        </h1>
+                        <p className="text-xs text-text-muted mt-1 select-none font-mono">portfolio_blueprint.json</p>
+                      </div>
+
+                      <PortfolioNetworkGraph nodes={nodes} links={links} />
                     </div>
                   );
                 })()
