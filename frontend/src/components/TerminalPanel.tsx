@@ -25,6 +25,102 @@ interface TerminalPanelProps {
   height?: number;
 }
 
+const parseInlineFormatting = (text: string) => {
+  const tokens = text.split(/(\*\*.*?\*\*|`.*?`)/g);
+  return tokens.map((token, i) => {
+    if (token.startsWith('**') && token.endsWith('**')) {
+      return (
+        <strong key={i} className="text-text-normal font-bold">
+          {token.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (token.startsWith('`') && token.endsWith('`')) {
+      return (
+        <code key={i} className="bg-dracula-selection/55 text-dracula-cyan px-1.5 py-0.5 rounded font-mono text-[11px] border border-border-light/20">
+          {token.slice(1, -1)}
+        </code>
+      );
+    }
+    return token;
+  });
+};
+
+const renderLine = (line: string, idx: string) => {
+  const trimmed = line.trim();
+  if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+    const content = trimmed.substring(2);
+    return (
+      <div key={idx} className="flex items-start gap-2 pl-4 py-0.5 whitespace-pre-wrap break-words">
+        <span className="text-dracula-purple select-none">•</span>
+        <span className="text-dracula-green">{parseInlineFormatting(content)}</span>
+      </div>
+    );
+  }
+  const numMatch = trimmed.match(/^(\d+)\.\s(.*)$/);
+  if (numMatch) {
+    const num = numMatch[1];
+    const content = numMatch[2];
+    return (
+      <div key={idx} className="flex items-start gap-2 pl-4 py-0.5 whitespace-pre-wrap break-words">
+        <span className="text-dracula-purple font-semibold select-none">{num}.</span>
+        <span className="text-dracula-green">{parseInlineFormatting(content)}</span>
+      </div>
+    );
+  }
+  if (trimmed === '') {
+    return <div key={idx} className="h-2" />;
+  }
+  return (
+    <div key={idx} className="text-dracula-green whitespace-pre-wrap break-words leading-relaxed py-0.5">
+      {parseInlineFormatting(line)}
+    </div>
+  );
+};
+
+const renderMessageContent = (text: string) => {
+  const trimmed = text.trim();
+  if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+    try {
+      const parsed = JSON.parse(trimmed);
+      const formatted = JSON.stringify(parsed, null, 2);
+      return (
+        <pre className="bg-editor-bg border border-border-dark/80 p-3 rounded-md my-2 overflow-x-auto font-mono text-[11px] text-dracula-cyan whitespace-pre-wrap break-words select-text">
+          <code>{formatted}</code>
+        </pre>
+      );
+    } catch (e) {
+      // Treat as plain text
+    }
+  }
+
+  const blocks = text.split(/(```[\s\S]*?```)/g);
+  return (
+    <div className="space-y-1">
+      {blocks.map((block, index) => {
+        if (block.startsWith('```') && block.endsWith('```')) {
+          const lines = block.split('\n');
+          const firstLine = lines[0].slice(3).trim();
+          const codeLines = lines.slice(1, -1).join('\n');
+          return (
+            <pre key={index} className="bg-editor-bg border border-border-dark/80 p-3 rounded-md my-2 overflow-x-auto font-mono text-[11px] text-dracula-cyan whitespace-pre-wrap break-words select-text">
+              {firstLine && <div className="text-[9px] text-text-muted uppercase font-bold tracking-wider mb-1 select-none">{firstLine}</div>}
+              <code>{codeLines}</code>
+            </pre>
+          );
+        }
+
+        const lines = block.split('\n');
+        return (
+          <div key={index} className="space-y-0.5">
+            {lines.map((line, idx) => renderLine(line, `${index}-${idx}`))}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export default function TerminalPanel({ height }: TerminalPanelProps) {
   const [activeTab, setActiveTab] = useState<string>('terminal');
   const [logs, setLogs] = useState<LogLine[]>(
@@ -208,8 +304,8 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
               }
               if (log.type === 'output') {
                 return (
-                  <div key={idx} className="text-dracula-green whitespace-pre-wrap leading-relaxed py-1 bg-dracula-selection/10 px-2 rounded border border-dracula-selection/20">
-                    {log.text}
+                  <div key={idx} className="text-dracula-green whitespace-pre-wrap break-words leading-relaxed py-2 bg-dracula-selection/10 px-3 rounded border border-dracula-selection/20 select-text">
+                    {renderMessageContent(log.text)}
                   </div>
                 );
               }
