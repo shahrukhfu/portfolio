@@ -93,8 +93,17 @@ function getExplorerData(): FileNode[] {
       content: blueprintRaw
     };
 
+    const welcomeNode: FileNode = {
+      name: 'Welcome.md',
+      path: 'welcome.md',
+      type: 'file',
+      language: 'markdown',
+      content: `# Shahrukh Faisal\n\nAI Student @ Air University | Full-Stack Developer & Autonomous Agents Specialist\n\n## About Me\nI am an AI engineer focused on bridging full-stack systems with autonomous agentic architectures. Currently pursuing an Artificial Intelligence degree at Air University, Islamabad, I specialize in engineering localized RAG implementations, multi-agent orchestrations, and high-throughput asynchronous backend systems.\n\n## Engineering Highlights\n- **Core Focus**: Autonomous Agents & Workflows\n- **Systems**: Full-Stack Microservices\n- **Tooling Mastery**: LangChain, FastAPI, Next.js, n8n\n- **Local AI Setup**: Zero-Cloud Privacy Ingestion`
+    };
+
     // Combine into unified file tree
     return [
+      welcomeNode,
       {
         name: 'projects',
         path: 'projects',

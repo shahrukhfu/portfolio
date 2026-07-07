@@ -210,7 +210,7 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
         const filtered = prev.filter((l) => l.type !== 'loading');
         return [
           ...filtered,
-          { text: `⚠️ Connection Error: Failed to fetch AI response (${err.message}). Make sure backend server is running on http://localhost:8000.`, type: 'error' },
+          { text: `Connection Error: Failed to fetch AI response (${err.message}). Make sure backend server is running on http://localhost:8000.`, type: 'error' },
         ];
       });
     } finally {
