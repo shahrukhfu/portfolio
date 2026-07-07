@@ -132,13 +132,27 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
 
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  // Auto-scroll to bottom
+  useEffect(() => {
+    if (!panelRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        setDimensions({ width, height });
+      }
+    });
+    observer.observe(panelRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-scroll to bottom on logs or layout resize
   useEffect(() => {
     if (terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      terminalEndRef.current.scrollIntoView({ behavior: 'auto' });
     }
-  }, [logs]);
+  }, [logs, dimensions]);
 
   const handleTerminalClick = () => {
     if (inputRef.current) {
@@ -226,6 +240,7 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
 
   return (
     <div
+      ref={panelRef}
       style={{ height: height ? `${height}px` : '280px' }}
       className="bg-editor-bg border-t border-border-dark flex flex-col overflow-hidden font-mono text-xs select-none"
     >

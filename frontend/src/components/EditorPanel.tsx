@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, FileJson, FileCode, FileText, Code2, Check } from 'lucide-react';
 import { FileNode } from './FileExplorer';
 
@@ -396,6 +396,21 @@ export default function EditorPanel({
   const [viewModes, setViewModes] = useState<Record<string, 'source' | 'preview'>>({});
   const [copiedPath, setCopiedPath] = useState<string | null>(null);
 
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (!editorRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        setDimensions({ width, height });
+      }
+    });
+    observer.observe(editorRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const getMode = (path: string) => viewModes[path] || 'source';
 
   const toggleMode = (path: string, mode: 'source' | 'preview') => {
@@ -713,7 +728,7 @@ export default function EditorPanel({
   const isFileJson = activeFile?.name.endsWith('.json') || false;
 
   return (
-    <div className="flex-1 bg-editor-bg flex flex-col h-full overflow-hidden">
+    <div ref={editorRef} className="flex-1 bg-editor-bg flex flex-col h-full overflow-hidden">
       {/* Tabs Header Toggle System */}
       {openFiles.length > 0 ? (
         <div className="flex bg-activity-bg border-b border-border-dark select-none h-[35px] items-center justify-between shrink-0">

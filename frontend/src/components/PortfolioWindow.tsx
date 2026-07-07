@@ -30,18 +30,23 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
   useEffect(() => {
     if (!isResizingSidebar && !isResizingTerminal) return;
 
+    let animFrameId: number;
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (isResizingSidebar) {
-        const newWidth = e.clientX - 50;
-        if (newWidth >= 200 && newWidth <= 450) {
-          setSidebarWidth(newWidth);
+      cancelAnimationFrame(animFrameId);
+      animFrameId = requestAnimationFrame(() => {
+        if (isResizingSidebar) {
+          const newWidth = e.clientX - 50;
+          if (newWidth >= 200 && newWidth <= 450) {
+            setSidebarWidth(newWidth);
+          }
+        } else if (isResizingTerminal) {
+          const newHeight = window.innerHeight - 22 - e.clientY;
+          if (newHeight >= 150 && newHeight <= 600) {
+            setTerminalHeight(newHeight);
+          }
         }
-      } else if (isResizingTerminal) {
-        const newHeight = window.innerHeight - 22 - e.clientY;
-        if (newHeight >= 150 && newHeight <= 600) {
-          setTerminalHeight(newHeight);
-        }
-      }
+      });
     };
 
     const handleMouseUp = () => {
@@ -53,6 +58,7 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
     document.addEventListener('mouseup', handleMouseUp);
 
     return () => {
+      cancelAnimationFrame(animFrameId);
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
