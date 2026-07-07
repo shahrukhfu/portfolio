@@ -21,7 +21,11 @@ const WELCOME_LINES = [
   "==================================================================",
 ];
 
-export default function TerminalPanel() {
+interface TerminalPanelProps {
+  height?: number;
+}
+
+export default function TerminalPanel({ height }: TerminalPanelProps) {
   const [activeTab, setActiveTab] = useState<string>('terminal');
   const [logs, setLogs] = useState<LogLine[]>(
     WELCOME_LINES.map(line => ({ text: line, type: 'system' }))
@@ -125,7 +129,10 @@ export default function TerminalPanel() {
   };
 
   return (
-    <div className="h-[280px] bg-editor-bg border-t border-border-dark flex flex-col overflow-hidden font-mono text-xs select-none">
+    <div
+      style={{ height: height ? `${height}px` : '280px' }}
+      className="bg-editor-bg border-t border-border-dark flex flex-col overflow-hidden font-mono text-xs select-none"
+    >
       {/* Panel Headers */}
       <div className="flex justify-between items-center bg-activity-bg border-b border-border-dark h-[35px] shrink-0">
         <div className="flex">

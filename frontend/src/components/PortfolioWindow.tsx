@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ActivityBar from './ActivityBar';
 import FileExplorer, { FileNode } from './FileExplorer';
 import EditorPanel from './EditorPanel';
@@ -19,6 +19,43 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
 
   // Search state
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Resizing states
+  const [sidebarWidth, setSidebarWidth] = useState<number>(300);
+  const [isResizingSidebar, setIsResizingSidebar] = useState<boolean>(false);
+  const [terminalHeight, setTerminalHeight] = useState<number>(280);
+  const [isResizingTerminal, setIsResizingTerminal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isResizingSidebar && !isResizingTerminal) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isResizingSidebar) {
+        const newWidth = e.clientX - 50;
+        if (newWidth >= 200 && newWidth <= 450) {
+          setSidebarWidth(newWidth);
+        }
+      } else if (isResizingTerminal) {
+        const newHeight = window.innerHeight - 22 - e.clientY;
+        if (newHeight >= 150 && newHeight <= 600) {
+          setTerminalHeight(newHeight);
+        }
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizingSidebar(false);
+      setIsResizingTerminal(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizingSidebar, isResizingTerminal]);
 
   // File explorer selection
   const handleFileSelect = (file: FileNode) => {
@@ -107,7 +144,10 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
 
         {/* Collapsible Sidebar Panel */}
         {sidebarOpen && (
-          <div className="w-[260px] md:w-[300px] bg-sidebar-bg shrink-0 flex flex-col h-full overflow-hidden border-r border-border-dark">
+          <div
+            style={{ width: `${sidebarWidth}px` }}
+            className="bg-sidebar-bg shrink-0 flex flex-col h-full overflow-hidden border-r border-border-dark"
+          >
             {/* Render Sidebar tabs depending on Active Bar Selection */}
             {activeTab === 'explorer' && (
               <FileExplorer
@@ -204,18 +244,40 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
           </div>
         )}
 
+        {/* Sidebar Resize Handle */}
+        {sidebarOpen && (
+          <div
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setIsResizingSidebar(true);
+            }}
+            className="w-1 bg-border-dark/60 hover:bg-dracula-purple/50 active:bg-dracula-purple cursor-col-resize shrink-0 z-20 transition-colors"
+          />
+        )}
+
         {/* Center Panel (Editor + Terminal) */}
         <div className="flex-1 flex flex-col h-full overflow-hidden">
           {/* Editor Tabs and Contents */}
-          <EditorPanel
-            openFiles={openFiles}
-            activeFile={activeFile}
-            onSelectFile={handleFileSelect}
-            onCloseFile={handleCloseFile}
+          <div className="flex-1 overflow-hidden relative">
+            <EditorPanel
+              openFiles={openFiles}
+              activeFile={activeFile}
+              onSelectFile={handleFileSelect}
+              onCloseFile={handleCloseFile}
+            />
+          </div>
+
+          {/* Terminal Resize Handle */}
+          <div
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setIsResizingTerminal(true);
+            }}
+            className="h-1 bg-border-dark/60 hover:bg-dracula-purple/50 active:bg-dracula-purple cursor-row-resize shrink-0 z-20 transition-colors"
           />
 
           {/* Terminal Console Panel */}
-          <TerminalPanel />
+          <TerminalPanel height={terminalHeight} />
         </div>
       </div>
 
