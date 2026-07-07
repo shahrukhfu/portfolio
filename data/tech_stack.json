@@ -1,0 +1,44 @@
+{
+  "languages": [
+    "Python",
+    "TypeScript",
+    "JavaScript",
+    "HTML5 / CSS3",
+    "Verilog HDL",
+    "C / Embedded C"
+  ],
+  "frontend_frameworks": [
+    "Next.js (App Router)",
+    "React.js",
+    "Tailwind CSS"
+  ],
+  "backend_ecosystem": [
+    "FastAPI",
+    "Flask",
+    "RESTful APIs",
+    "WebSockets",
+    "Asynchronous Programming (asyncio)"
+  ],
+  "ai_and_data_science": [
+    "Retrieval-Augmented Generation (RAG)",
+    "Agentic Mesh Networks (CrewAI / AutoGen)",
+    "Computer Vision (OpenCV)",
+    "Deep Learning (PyTorch / TensorFlow / U-Net)",
+    "Machine Learning (Scikit-Learn / XGBoost)",
+    "Data Analysis (Pandas / NumPy)",
+    "Vector Databases (ChromaDB / FAISS)",
+    "Prompt Engineering"
+  ],
+  "devops_and_automation": [
+    "n8n (Autonomous Agentic Workflows)",
+    "Docker",
+    "Git / GitHub Version Control"
+  ],
+  "databases_and_caching": [
+    "PostgreSQL",
+    "Redis"
+  ],
+  "testing_frameworks": [
+    "Pytest"
+  ]
+}

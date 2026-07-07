@@ -1,0 +1,52 @@
+[
+  {
+    "title": "AI For Everyone",
+    "issuer": "DeepLearning.AI",
+    "issue_date": "June 2026",
+    "credential_id": "VNAA2YI2FRZM",
+    "skills_and_focus": [
+      "AI Terminology (ANI vs AGI, Neural Networks, Deep Learning)",
+      "Machine Learning and Data Science Project Workflows",
+      "Identifying & Selecting Business Opportunities for AI",
+      "Building AI Strategy and Working with AI Teams",
+      "Navigating Ethical and Societal Challenges of Automation"
+    ]
+  },
+  {
+    "title": "Google AI Essentials Specialization",
+    "issuer": "Google",
+    "issue_date": "June 2026",
+    "credential_id": "G96MWZQ8RDBO",
+    "skills_and_focus": [
+      "AI Literacy and Core Machine Learning Fundamentals",
+      "Maximizing Workplace Productivity with Conversational AI",
+      "Prompt Engineering Techniques (including Few-Shot Prompting)",
+      "Applying Frameworks of AI Harms to Workplace Scenarios",
+      "Strategies for Adapting to the Emerging AI Landscape"
+    ]
+  },
+  {
+    "title": "Use AI Responsibly",
+    "issuer": "Google",
+    "issue_date": "June 2026",
+    "credential_id": "3C8DVDLDXF56",
+    "skills_and_focus": [
+      "Recognizing Data Bias, Underrepresentation, and Algorithmic Harms",
+      "Identifying Privacy and Security Risks in AI Implementations",
+      "Human Oversight and Inaccuracy Mitigation Best Practices",
+      "Analyzing Social Impacts and AI for Social Good"
+    ]
+  },
+  {
+    "title": "Develop Generative AI Applications",
+    "issuer": "IBM",
+    "issue_date": "July 2026",
+    "credential_id": "MRSBKBI512QT",
+    "skills_and_focus": [
+      "Foundational Large Language Models (LLMs) and Content Generation",
+      "Integrating Foundational Models (e.g., IBM Granite) into Applications",
+      "Building Generative AI Solutions for Software Development",
+      "Utilizing Frameworks and Tools for Ethical Guardrails and Risk Management"
+    ]
+  }
+]
