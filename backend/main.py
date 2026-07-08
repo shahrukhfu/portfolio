@@ -16,8 +16,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "https://your-custom-domain.com",      # PLACEHOLDER: Change to your custom domain (e.g. shahrukhfaisal.com)
-        "https://www.your-custom-domain.com",  # PLACEHOLDER: Change to your custom domain with www
+        "https://shahrukhfaisal.dev",
+        "https://www.shahrukhfaisal.dev",
     ],
     allow_origin_regex=r"https://.*\.vercel\.app",  # Matches all Vercel previews and production deployments!
     allow_credentials=True,
