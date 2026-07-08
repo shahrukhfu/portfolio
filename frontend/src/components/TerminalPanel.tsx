@@ -133,6 +133,7 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -153,6 +154,17 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
       terminalEndRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [logs]);
+
+  // Adjust scroll position during layout resize ONLY if the user was already at the bottom
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 35;
+    
+    if (isAtBottom && terminalEndRef.current) {
+      terminalEndRef.current.scrollIntoView({ behavior: 'auto' });
+    }
+  }, [dimensions]);
 
   const handleTerminalClick = () => {
     if (inputRef.current) {
@@ -291,6 +303,7 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
 
       {/* Terminal View Content */}
       <div
+        ref={scrollContainerRef}
         onClick={handleTerminalClick}
         className="flex-1 overflow-y-auto p-4 cursor-text bg-editor-bg relative select-text"
       >
