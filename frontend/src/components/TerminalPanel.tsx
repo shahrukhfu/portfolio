@@ -199,8 +199,10 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
     // Add loader entry
     setLogs((prev) => [...prev, { text: '[*] Consulting AI Core model... [spinning wheel]', type: 'loading' }]);
 
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
     try {
-      const response = await fetch('http://localhost:8000/api/chat', {
+      const response = await fetch(`${backendUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -224,7 +226,7 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
         const filtered = prev.filter((l) => l.type !== 'loading');
         return [
           ...filtered,
-          { text: `Connection Error: Failed to fetch AI response (${err.message}). Make sure backend server is running on http://localhost:8000.`, type: 'error' },
+          { text: `Connection Error: Failed to fetch AI response (${err.message}). Make sure backend server is running on ${backendUrl}.`, type: 'error' },
         ];
       });
     } finally {
