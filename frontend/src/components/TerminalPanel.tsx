@@ -147,12 +147,12 @@ export default function TerminalPanel({ height }: TerminalPanelProps) {
     return () => observer.disconnect();
   }, []);
 
-  // Auto-scroll to bottom on logs or layout resize
+  // Auto-scroll to bottom on new logs
   useEffect(() => {
     if (terminalEndRef.current) {
       terminalEndRef.current.scrollIntoView({ behavior: 'auto' });
     }
-  }, [logs, dimensions]);
+  }, [logs]);
 
   const handleTerminalClick = () => {
     if (inputRef.current) {
