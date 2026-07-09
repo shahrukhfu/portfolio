@@ -432,8 +432,8 @@ export default function EditorPanel({
 
   const renderWelcomeScreen = () => {
     return (
-      <div className="flex flex-col items-center justify-start overflow-y-auto h-full p-6 md:p-10 select-none bg-editor-bg animate-scale-in max-w-4xl mx-auto scroll-smooth">
-        <Code2 size={64} className="text-dracula-purple mb-4 animate-pulse" />
+      <div className="flex flex-col items-center justify-start p-6 md:p-10 select-none bg-editor-bg animate-scale-in max-w-4xl mx-auto">
+        <Code2 size={64} className="text-dracula-purple mb-4 animate-pulse shrink-0" />
         
         <h1 className="text-2xl md:text-3xl font-bold text-text-normal mb-1 font-sans tracking-tight">
           Shahrukh Faisal

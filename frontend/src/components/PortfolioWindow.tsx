@@ -145,20 +145,20 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
     <div className="h-screen w-screen flex flex-col overflow-hidden bg-editor-bg select-none text-text-normal">
       {/* VS Code Window Title Bar */}
       <div className="h-[30px] bg-activity-bg flex items-center justify-between px-3 border-b border-border-dark select-none shrink-0 text-text-muted text-xs">
-        {/* Window controls decoration */}
-        <div className="flex items-center gap-1.5 w-1/4">
+        {/* Window controls decoration (Desktop Only) */}
+        <div className="hidden md:flex items-center gap-1.5 w-1/4">
           <span className="w-3 h-3 rounded-full bg-dracula-red/80 hover:bg-dracula-red transition-colors inline-block" />
           <span className="w-3 h-3 rounded-full bg-dracula-yellow/80 hover:bg-dracula-yellow transition-colors inline-block" />
           <span className="w-3 h-3 rounded-full bg-dracula-green/80 hover:bg-dracula-green transition-colors inline-block" />
         </div>
         
         {/* Document Title */}
-        <div className="w-2/4 text-center truncate select-text">
+        <div className="flex-1 md:w-2/4 text-left md:text-center truncate select-text font-medium md:font-normal">
           {activeFile ? `${activeFile.name} - ` : ''}Shahrukh Faisal
         </div>
         
-        {/* Empty layout spacer */}
-        <div className="w-1/4 flex justify-end items-center text-[10px] uppercase font-bold tracking-wider opacity-85">
+        {/* Layout Control Spacer */}
+        <div className="flex-1 md:w-1/4 flex justify-end items-center text-[10px] uppercase font-bold tracking-wider opacity-85">
           {/* Layout Toggles */}
           <div className="flex items-center gap-1 border-r border-border-dark pr-2 mr-2">
             <button
@@ -184,7 +184,7 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
               </svg>
             </button>
           </div>
-          <span className="bg-dracula-selection px-2 py-0.5 rounded text-dracula-purple">Dracula Theme</span>
+          <span className="hidden sm:inline bg-dracula-selection px-2 py-0.5 rounded text-dracula-purple">Dracula Theme</span>
         </div>
       </div>
 
@@ -323,6 +323,13 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
               onSelectFile={handleFileSelect}
               onCloseFile={handleCloseFile}
             />
+            {/* Mobile Sidebar Overlay Dimmer Overlay */}
+            {isMobile && sidebarOpen && (
+              <div
+                onClick={() => setSidebarOpen(false)}
+                className="absolute inset-0 bg-black/45 z-20 transition-opacity duration-200"
+              />
+            )}
           </div>
 
           {/* Terminal Resize Handle & Console Panel */}
