@@ -142,7 +142,7 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
   const searchResults = getSearchResults();
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-editor-bg select-none text-text-normal">
+    <div className="h-dvh w-dvw flex flex-col overflow-hidden bg-editor-bg select-none text-text-normal">
       {/* VS Code Window Title Bar */}
       <div className="h-[30px] bg-activity-bg flex items-center justify-between px-3 border-b border-border-dark select-none shrink-0 text-text-muted text-xs">
         {/* Window controls decoration (Desktop Only) */}
@@ -375,10 +375,10 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
         </div>
 
         <div className="flex items-center gap-3">
-          <span>Ln 1, Col 1</span>
-          <span>Spaces: 2</span>
-          <span>UTF-8</span>
-          <span className="hidden sm:inline">
+          <span className="hidden md:inline">Ln 1, Col 1</span>
+          <span className="hidden md:inline">Spaces: 2</span>
+          <span className="hidden md:inline">UTF-8</span>
+          <span className="text-[10px] uppercase font-mono tracking-wider opacity-85">
             {activeFile?.language ? activeFile.language.toUpperCase() : 'PLAIN TEXT'}
           </span>
         </div>
