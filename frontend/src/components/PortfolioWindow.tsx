@@ -27,6 +27,25 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
   const [terminalHeight, setTerminalHeight] = useState<number>(280);
   const [isResizingTerminal, setIsResizingTerminal] = useState<boolean>(false);
 
+  // Mobile state
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    
+    // Auto-collapse panels on first mobile mount
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+      setTerminalOpen(false);
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     if (!isResizingSidebar && !isResizingTerminal) return;
 
@@ -71,6 +90,11 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
       setOpenFiles((prev) => [...prev, file]);
     }
     setActiveFile(file);
+    
+    // Auto-close sidebar on mobile
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
   };
 
   // Close tab
@@ -177,8 +201,10 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
         {/* Collapsible Sidebar Panel */}
         {sidebarOpen && (
           <div
-            style={{ width: `${sidebarWidth}px` }}
-            className="bg-sidebar-bg shrink-0 flex flex-col h-full overflow-hidden border-r border-border-dark"
+            style={{ width: isMobile ? 'calc(100vw - 50px)' : `${sidebarWidth}px` }}
+            className={`${
+              isMobile ? 'absolute left-[50px] top-0 bottom-0 z-30 shadow-2xl' : 'relative'
+            } bg-sidebar-bg shrink-0 flex flex-col h-full overflow-hidden border-r border-border-dark`}
           >
             {/* Render Sidebar tabs depending on Active Bar Selection */}
             {activeTab === 'explorer' && (
@@ -277,7 +303,7 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
         )}
 
         {/* Sidebar Resize Handle */}
-        {sidebarOpen && (
+        {sidebarOpen && !isMobile && (
           <div
             onMouseDown={(e) => {
               e.preventDefault();
@@ -302,14 +328,16 @@ export default function PortfolioWindow({ initialExplorerData }: PortfolioWindow
           {/* Terminal Resize Handle & Console Panel */}
           {terminalOpen && (
             <>
-              <div
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  setIsResizingTerminal(true);
-                }}
-                className="h-1 bg-border-dark/60 hover:bg-dracula-purple/50 active:bg-dracula-purple cursor-row-resize shrink-0 z-20 transition-colors"
-              />
-              <TerminalPanel height={terminalHeight} />
+              {!isMobile && (
+                <div
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    setIsResizingTerminal(true);
+                  }}
+                  className="h-1 bg-border-dark/60 hover:bg-dracula-purple/50 active:bg-dracula-purple cursor-row-resize shrink-0 z-20 transition-colors"
+                />
+              )}
+              <TerminalPanel height={isMobile ? 250 : terminalHeight} />
             </>
           )}
         </div>
