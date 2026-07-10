@@ -1,5 +1,13 @@
 # Shahrukh Faisal - Interactive Portfolio Workspace
 
+<div align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3000&pause=1000&color=BD93F9&background=1E1E2400&center=true&vCenter=true&width=500&height=50&lines=AI+%26+Systems+Engineer;Localized+RAG+Architect;Autonomous+Agent+Developer" alt="Typing SVG" />
+</div>
+
+<div align="center">
+  <img src="assets/skills_marquee.svg" alt="Technical Stack Marquee" width="100%" />
+</div>
+
 A high-fidelity developer portfolio designed to mimic the exact Visual Studio Code desktop interface. It features smooth layout resizing, a mobile responsive slide-out drawer, and an integrated RAG (Retrieval-Augmented Generation) terminal chatbot that queries my experience and projects in real time.
 
 This workspace is a monorepo consisting of a Next.js frontend (deployed on Vercel) and an asynchronous FastAPI backend (deployed as a Docker space on Hugging Face).
@@ -41,11 +49,17 @@ graph TD
 
 ---
 
-## Video Demonstration
+## Demonstration
 
-The video below demonstrates the real-time layout resizing, file exploration, and the RAG terminal assistant in action:
+Click the preview image below to watch the interactive demonstration video showing the real-time layout resizing, file exploration, and the RAG terminal assistant in action:
 
-<video src="demo.mp4" width="100%" controls muted></video>
+<div align="center">
+  <a href="https://github.com/shahrukhfu/portfolio/raw/main/demo.mp4" target="_blank">
+    <img src="assets/demo_thumbnail.png" width="100%" alt="Watch the Demo Video" style="border-radius: 10px; border: 1px solid #2A2D44;" />
+  </a>
+</div>
+
+*Note: Clicking the mockup will play the walkthrough video in your browser.*
 
 ---
 
@@ -126,5 +140,12 @@ The video below demonstrates the real-time layout resizing, file exploration, an
 
 ## Deployment Links
 
-* **Live Frontend**: [shahrukhfaisal.dev](https://shahrukhfaisal.dev)
-* **Live API Space**: [huggingface.co/spaces/shahrukhfu/portfolio-backend](https://huggingface.co/spaces/shahrukhfu/portfolio-backend)
+<div align="center">
+  <a href="https://shahrukhfaisal.dev" target="_blank">
+    <img src="https://img.shields.io/badge/Live%20Frontend-shahrukhfaisal.dev-blueviolet?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Frontend" />
+  </a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://huggingface.co/spaces/shahrukhfu/portfolio-backend" target="_blank">
+    <img src="https://img.shields.io/badge/Live%20API%20Space-Hugging%20Face-yellow?style=for-the-badge&logo=huggingface&logoColor=black" alt="Live API Space" />
+  </a>
+</div>
